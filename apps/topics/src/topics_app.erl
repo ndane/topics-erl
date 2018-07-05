@@ -17,7 +17,12 @@
 start(_StartType, _StartArgs) ->
     Routes = [
         {'_', [
-            {"/", topics_base_handler, []}
+            %% Root
+            {"/", topics_base_handler, []},
+
+            %% Topics
+            {"/topics", topics_topic_list_handler, []}, 
+            {"/topics/:id", topics_topic_handler, []}
         ]}
     ],
     Dispatch = cowboy_router:compile(Routes),
