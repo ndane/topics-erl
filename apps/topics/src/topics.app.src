@@ -1,0 +1,17 @@
+{application, topics,
+ [{description, "A topics API"},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {mod, { topics_app, []}},
+  {applications,
+   [kernel,
+    stdlib,
+    cowboy
+   ]},
+  {env,[]},
+  {modules, []},
+
+  {maintainers, []},
+  {licenses, ["Apache 2.0"]},
+  {links, []}
+ ]}.
