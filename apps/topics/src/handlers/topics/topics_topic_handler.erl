@@ -2,10 +2,11 @@
 -module(topics_topic_handler).
 -behaviour(cowboy_handler).
 
--export([init/2,
-         content_types_provided/2,
-         to_json/2,
-         to_html/2]).
+-export([
+    init/2,
+    content_types_provided/2,
+    to_json/2,
+    to_html/2]).
 
 -include("records/topic.hrl").
 
