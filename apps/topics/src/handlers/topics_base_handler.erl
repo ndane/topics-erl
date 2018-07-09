@@ -26,11 +26,11 @@ content_types_provided(Req, State) ->
     {ContentTypes, Req, State}.
 
 to_json(Req, State) ->
-    User = t_user:new("Nathan", "nathan@nathandane.co.uk"),
-    {t_user:to_json(User), Req, State}.
+    User = topics_user:new("Nathan", "nathan@nathandane.co.uk"),
+    {topics_user:to_json(User), Req, State}.
 
 to_html(Req, State) ->
-    User = t_user:new("Nathan", "nathan@nathandane.co.uk"),
-    Body = io_lib:format("<h1>~s</h1><b />~s", [t_user:username(User),
-                                                t_user:email(User)]),
+    User = topics_user:new("Nathan", "nathan@nathandane.co.uk"),
+    Body = io_lib:format("<h1>~s</h1><b />~s", [topics_user:username(User),
+                                                topics_user:email(User)]),
     {list_to_binary(Body), Req, State}.
