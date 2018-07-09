@@ -1,0 +1,23 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+CREATE OR REPLACE FUNCTION trigger_set_timestamp()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TABLE TOPICS (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    title VARCHAR NOT NULL,
+    username VARCHAR NOT NULL,
+    body VARCHAR NOT NULL,
+	  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TRIGGER set_timestamp
+BEFORE UPDATE ON TOPICS
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();

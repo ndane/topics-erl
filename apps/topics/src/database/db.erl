@@ -1,16 +1,17 @@
 -module(db).
 
--export([
-    connect/0,
-    connection/1,
-    get_connection/0
-]).
+-export([connect/0,
+        connection/1,
+        get_connection/0,
+        close/0]).
 
 connect() ->
-    Res = epgsql:connect("localhost", "postgres", "postgres", [
+    {ok, Res} = epgsql:connect("localhost", "postgres", "postgres", [
         {database, "topics"},
         {timeout, 4000}
-    ]).
+    ]),
+    Pid = spawn_link(?MODULE, connection, [Res]),
+    register(db_connection, Pid).
 
 connection(Conn) ->
     receive 
@@ -25,3 +26,7 @@ get_connection() ->
         {connection, Conn} ->
             Conn
     end.
+
+close() ->
+    Conn = get_connection(),
+    epgsql:close(Conn).

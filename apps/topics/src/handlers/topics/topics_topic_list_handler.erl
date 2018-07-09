@@ -22,7 +22,8 @@ allowed_methods(Req, State) ->
     {[<<"HEAD">>, <<"GET">>, <<"OPTIONS">>], Req, State}.
 
 to_json(Req, State) ->
-    {<<"[]">>, Req, State}.
+    Topics = topics_topic:all(),
+    {topics_topic:to_json(Topics), Req, State}.
 
 to_html(Req, State) ->
     {<<"Implement me">>, Req, State}.

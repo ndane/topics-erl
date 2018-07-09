@@ -20,6 +20,9 @@
 % Parser Exports
 -export([to_json/1]).
 
+% Database Queries
+-export([all/0]).
+
 %% Initializer
 -spec new(Title :: string(), Username :: string(), Body :: string()) -> topic().
 new(Title, Username, Body) ->
@@ -45,11 +48,33 @@ body(Topic) ->
 
 %% Parsers
 
--spec to_json(Topic :: topic()) -> iolist().
-to_json(Topic) ->
-    Map = #{
+-spec to_map(Topic :: topic()) -> map().
+to_map(Topic) ->
+    #{
         title => list_to_binary(Topic#topic.title),
         username => list_to_binary(Topic#topic.username),
         body => list_to_binary(Topic#topic.body)
-    },
-    jiffy:encode(Map).
+    }.
+
+-spec to_json(Topic :: topic()) -> iolist();
+             (Topics :: [topic()]) -> iolist().
+to_json(Topic) when is_record(Topic, topic) ->
+    Map = to_map(Topic),
+    jiffy:encode(Map);
+
+to_json(Topics) when is_list(Topics) ->
+    List = [to_map(T) || T <- Topics],
+    jiffy:encode(List).
+
+%% Database Queries
+
+-spec all() -> [topic()].
+all() ->
+    Connection = db:get_connection(),
+    {ok, _Columns, Rows} = epgsql:equery(Connection, "SELECT * FROM TOPICS"),
+    Topics = [#topic{
+        title = binary_to_list(Title), 
+        username = binary_to_list(Username),
+        body = binary_to_list(Body)
+    } || {_, Title, Username, Body, _, _} <- Rows],
+    Topics.
