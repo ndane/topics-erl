@@ -1,4 +1,6 @@
-%$ RESTful module handling topic lists
+%%====================================================================
+%% REST Cowboy Module to access the topics list
+%%====================================================================
 -module(topics_topic_list_handler).
 -behaviour(cowboy_handler).
 
@@ -9,8 +11,16 @@
     to_json/2,
     to_html/2]).
 
+%%====================================================================
+%% Initializer
+%%====================================================================
+
 init(Req, State) ->
     {cowboy_rest, Req, State}.
+
+%%====================================================================
+%% REST Flow
+%%====================================================================
 
 content_types_provided(Req, State) ->
     {[
@@ -20,6 +30,10 @@ content_types_provided(Req, State) ->
 
 allowed_methods(Req, State) ->
     {[<<"HEAD">>, <<"GET">>, <<"OPTIONS">>], Req, State}.
+
+%%====================================================================
+%% Parsers
+%%====================================================================
 
 to_json(Req, State) ->
     Topics = topics_topic:all(),

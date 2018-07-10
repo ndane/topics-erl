@@ -1,5 +1,5 @@
 %%====================================================================
-%% REST Cowboy Module to return a list of topics 
+%% REST Cowboy Module to access topics
 %%====================================================================
 -module(topics_topic_handler).
 -behaviour(cowboy_handler).
