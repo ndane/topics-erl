@@ -3,7 +3,9 @@
 -export([connect/0,
         connection/1,
         get_connection/0,
-        close/0]).
+        close/0,
+        query/1,
+        query/2]).
 
 connect() ->
     {ok, Res} = epgsql:connect("localhost", "postgres", "postgres", [
@@ -30,3 +32,13 @@ get_connection() ->
 close() ->
     Conn = get_connection(),
     epgsql:close(Conn).
+
+-spec query(Query :: string()) -> any().
+query(Query) ->
+    Conn = get_connection(),
+    epgsql:equery(Conn, Query).
+
+-spec query(Query :: string(), Params :: [any()]) -> any().
+query(Query, Params) ->
+    Conn = get_connection(),
+    epgsql:equery(Conn, Query, Params).
