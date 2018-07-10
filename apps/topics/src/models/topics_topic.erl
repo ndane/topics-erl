@@ -1,3 +1,7 @@
+%% @author Nathan Dane <nathan@nathandane.co.uk>
+%% @copyright 2018 Nathan Dane
+%% @doc <b>topics_topic</b> contains topic type functions 
+
 -module(topics_topic).
 
 -record(topic, {
@@ -106,6 +110,6 @@ all() ->
 
 -spec get_by_id(Id :: string()) -> topic().
 get_by_id(Id) ->
-    {ok, _Columns, Rows} = db:query("SELECT * FROM TOPICS WHERE Id = $1", [Id]),
+    {ok, _Columns, Rows} = db:query("SELECT * FROM TOPICS WHERE Id = $1 LIMIT 1", [Id]),
     [Topic | _] = [from_db_row(R) || R  <- Rows],
     Topic.
