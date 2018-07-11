@@ -15,7 +15,7 @@
 %%====================================================================
 
 start(_StartType, _StartArgs) ->
-    db:connect(),
+    db:connect("localhost", "postgres", "postgres", "topics"),
     Routes = [
         {'_', [
             %% Root

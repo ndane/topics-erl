@@ -1,18 +1,25 @@
+%% @author Nathan Dane <nathan@nathandane.co.uk>
+%% @copyright 2018 Nathan Dane
+%% @doc Start and maintain a connection to a database
+
 -module(db).
 
--export([connect/0,
-        connection/1,
-        get_connection/0,
+-export([connect/4,
         close/0,
         query/1,
         query/2]).
 
-connect() ->
-    {ok, Res} = epgsql:connect("localhost", "postgres", "postgres", [
-        {database, "topics"},
+-spec connect(Host :: string(), 
+              Username :: string(), 
+              Password :: string(), 
+              Database :: string()) -> any().
+connect(Host, Username, Password, Database) ->
+    {ok, Res} = epgsql:connect(Host, Username, Password, [
+        {database, Database},
         {timeout, 4000}
     ]),
-    Pid = spawn_link(?MODULE, connection, [Res]),
+    Pid = spawn(fun() -> connection(Res) end),
+    link(Pid),
     register(db_connection, Pid).
 
 connection(Conn) ->

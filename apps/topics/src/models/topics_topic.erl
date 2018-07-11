@@ -111,5 +111,5 @@ all() ->
 -spec get_by_id(Id :: string()) -> topic().
 get_by_id(Id) ->
     {ok, _Columns, Rows} = db:query("SELECT * FROM TOPICS WHERE Id = $1 LIMIT 1", [Id]),
-    [Topic | _] = [from_db_row(R) || R  <- Rows],
+    Topic = from_db_row(hd(Rows)),
     Topic.
