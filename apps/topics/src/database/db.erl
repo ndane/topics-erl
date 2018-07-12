@@ -27,7 +27,7 @@ connection(Conn) ->
         {From, connection} ->
             From ! {connection, Conn}
     end,
-    connection(Conn). 
+    connection(Conn).
 
 get_connection() ->
     db_connection ! {self(), connection},

@@ -21,3 +21,17 @@ CREATE TRIGGER set_timestamp
 BEFORE UPDATE ON TOPICS
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
+
+CREATE TABLE USERS (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    username VARCHAR NOT NULL,
+    email VARCHAR NOT NULL,
+    password VARCHAR NOT NULL,
+	  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TRIGGER set_timestamp
+BEFORE UPDATE ON USERS
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();

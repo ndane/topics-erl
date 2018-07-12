@@ -1,5 +1,6 @@
 {"1.1.0",
 [{<<"aleppo">>,{pkg,<<"inaka_aleppo">>,<<"1.1.1">>},2},
+ {<<"bcrypt">>,{pkg,<<"bcrypt">>,<<"1.0.2">>},0},
  {<<"certifi">>,{pkg,<<"certifi">>,<<"2.3.1">>},3},
  {<<"cowboy">>,{pkg,<<"cowboy">>,<<"2.4.0">>},0},
  {<<"cowlib">>,{pkg,<<"cowlib">>,<<"2.3.0">>},1},
@@ -24,6 +25,7 @@
 [
 {pkg_hash,[
  {<<"aleppo">>, <<"B0F7D05A118C5EBC3A735D68E92A7BD5837FE53455495EDE37CF0AA8BA4912E3">>},
+ {<<"bcrypt">>, <<"6735F66D3A7309AF166CE660161009B7D9B9216508B8B2E6A0A9090AF35CB757">>},
  {<<"certifi">>, <<"D0F424232390BF47D82DA8478022301C561CF6445B5B5FB6A84D49A9E76D2639">>},
  {<<"cowboy">>, <<"F1B72FABE9C8A5FC64AC5AC85FB65474D64733D1DF52A26FAD5D4BA3D9F70A9F">>},
  {<<"cowlib">>, <<"BBD58EF537904E4F7C1DD62E6AA8BC831C8183CE4EFA9BD1150164FE15BE4CAA">>},

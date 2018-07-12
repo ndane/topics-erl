@@ -1,6 +1,8 @@
+%%====================================================================
 %% @author Nathan Dane <nathan@nathandane.co.uk>
 %% @copyright 2018 Nathan Dane
 %% @doc <b>topics_topic</b> contains topic type functions 
+%%====================================================================
 
 -module(topics_topic).
 
@@ -24,11 +26,14 @@
         body/1]).
 
 % Parser Exports
--export([to_json/1]).
+-export([to_json/1,
+        from_json/1]).
 
 % Database Queries
--export([all/0,
-        get_by_id/1]).
+-export([save/1,
+        all/0,
+        get_by_id/1,
+        exists/1]).
 
 %%====================================================================
 %% Initializer
@@ -76,6 +81,16 @@ to_json(Topics) when is_list(Topics) ->
     List = [to_map(T) || T <- Topics],
     jiffy:encode(List).
 
+-spec from_json(string()) -> topic().
+from_json(Json) ->
+    Map = jiffy:decode(Json, [return_maps]),
+    #{<<"title">> := Title, <<"username">> := Username, <<"body">> := Body} = Map,
+    #topic{
+        title = binary_to_list(Title), 
+        username = binary_to_list(Username),
+        body = binary_to_list(Body)
+    }.
+
 %%====================================================================
 %% Internal API
 %%====================================================================
@@ -102,6 +117,16 @@ from_db_row(Row) ->
 %% Database Queries
 %%====================================================================
 
+-spec save(topic()) -> topic().
+save(Topic) ->
+    Query = "INSERT INTO TOPICS (title, username, body) VALUES ($1, $2, $3) RETURNING *",
+    {ok, 1, _Columns, [Row | _]} = db:query(Query, [
+        Topic#topic.title,
+        Topic#topic.username,
+        Topic#topic.body
+    ]),
+    from_db_row(Row).
+
 -spec all() -> [topic()].
 all() ->
     {ok, _Columns, Rows} = db:query("SELECT * FROM TOPICS"),
@@ -113,3 +138,11 @@ get_by_id(Id) ->
     {ok, _Columns, Rows} = db:query("SELECT * FROM TOPICS WHERE Id = $1 LIMIT 1", [Id]),
     Topic = from_db_row(hd(Rows)),
     Topic.
+
+-spec exists(Id :: string()) -> atom().
+exists(Id) ->
+    {ok, _Columns, [Row | _]} = db:query("SELECT COUNT(1) FROM TOPICS WHERE ID = $1", [Id]),
+    case Row of
+        {0} -> false;
+        {1} -> true
+    end.
