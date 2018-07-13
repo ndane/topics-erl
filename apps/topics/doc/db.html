@@ -10,14 +10,15 @@
 <hr>
 
 <h1>Module db</h1>
-<ul class="index"><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>
+<ul class="index"><li><a href="#description">Description</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>Start and maintain a connection to a database.
+<p>Copyright © 2018 Nathan Dane</p>
 
+<p><b>Authors:</b> Nathan Dane (<a href="mailto:nathan@nathandane.co.uk"><tt>nathan@nathandane.co.uk</tt></a>).</p>
 
+<h2><a name="description">Description</a></h2>Start and maintain a connection to a database
 <h2><a name="index">Function Index</a></h2>
 <table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#close-0">close/0</a></td><td></td></tr>
-<tr><td valign="top"><a href="#connect-0">connect/0</a></td><td></td></tr>
-<tr><td valign="top"><a href="#connection-1">connection/1</a></td><td></td></tr>
-<tr><td valign="top"><a href="#get_connection-0">get_connection/0</a></td><td></td></tr>
+<tr><td valign="top"><a href="#connect-4">connect/4</a></td><td></td></tr>
 <tr><td valign="top"><a href="#query-1">query/1</a></td><td></td></tr>
 <tr><td valign="top"><a href="#query-2">query/2</a></td><td></td></tr>
 </table>
@@ -29,19 +30,9 @@
 <p><tt>close() -&gt; any()</tt></p>
 </div>
 
-<h3 class="function"><a name="connect-0">connect/0</a></h3>
+<h3 class="function"><a name="connect-4">connect/4</a></h3>
 <div class="spec">
-<p><tt>connect() -&gt; any()</tt></p>
-</div>
-
-<h3 class="function"><a name="connection-1">connection/1</a></h3>
-<div class="spec">
-<p><tt>connection(Conn) -&gt; any()</tt></p>
-</div>
-
-<h3 class="function"><a name="get_connection-0">get_connection/0</a></h3>
-<div class="spec">
-<p><tt>get_connection() -&gt; any()</tt></p>
+<p><tt>connect(Host::string(), Username::string(), Password::string(), Database::string()) -&gt; any()</tt><br></p>
 </div>
 
 <h3 class="function"><a name="query-1">query/1</a></h3>

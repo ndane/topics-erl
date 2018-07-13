@@ -1,4 +1,5 @@
 %% encoding: UTF-8
 {application,topics}.
 {modules,[db,topics_app,topics_base_handler,topics_sup,topics_topic,
-          topics_topic_handler,topics_topic_list_handler,topics_user]}.
+          topics_topic_handler,topics_topic_list_handler,topics_user,
+          topics_user_handler]}.

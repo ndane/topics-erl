@@ -12,7 +12,7 @@
         content_types_accepted/2,
         allowed_methods/2,
         to_json/2,
-        create_from_json/2,
+        from_json/2,
         to_html/2]).
 
 %%====================================================================
@@ -23,7 +23,7 @@ init(Req, State) ->
     {cowboy_rest, Req, State}.
 
 %%====================================================================
-%% REST Flow
+%% REST Handlers
 %%====================================================================
 
 content_types_provided(Req, State) ->
@@ -33,7 +33,7 @@ content_types_provided(Req, State) ->
     ], Req, State}.
 
 content_types_accepted(Req, State) ->
-    {[{<<"application/json">>, create_from_json}], Req, State}.
+    {[{<<"application/json">>, from_json}], Req, State}.
 
 allowed_methods(Req, State) ->
     {[<<"HEAD">>, <<"GET">>, <<"PUT">>, <<"OPTIONS">>], Req, State}.
@@ -46,12 +46,17 @@ to_json(Req, State) ->
     Topics = topics_topic:all(),
     {topics_topic:to_json(Topics), Req, State}.
 
-create_from_json(Req, State) ->
+to_html(Req, State) ->
+    {<<"Implement me">>, Req, State}.
+
+%%====================================================================
+%% REST Methods
+%%====================================================================
+
+%% Called from PUT Request
+from_json(Req, State) ->
     {ok, ReqBody, Req2} = cowboy_req:read_body(Req),
     Body = io_lib:format("~s", [ReqBody]),
     Topic = topics_topic:save(topics_topic:from_json(Body)),
     Req3 = cowboy_req:reply(200, #{}, topics_topic:to_json(Topic), Req2),
     {stop, Req3, State}.
-
-to_html(Req, State) ->
-    {<<"Implement me">>, Req, State}.

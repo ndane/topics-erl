@@ -10,12 +10,14 @@
 <hr>
 
 <h1>Module topics_topic</h1>
-<ul class="index"><li><a href="#description">Description</a></li><li><a href="#types">Data Types</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul><b>topics_topic</b> contains topic type functions.
+<ul class="index"><li><a href="#description">Description</a></li><li><a href="#types">Data Types</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul><b>topics_topic</b> contains topic type functions
+ ====================================================================.
 <p>Copyright © 2018 Nathan Dane</p>
 
 <p><b>Authors:</b> Nathan Dane (<a href="mailto:nathan@nathandane.co.uk"><tt>nathan@nathandane.co.uk</tt></a>).</p>
 
 <h2><a name="description">Description</a></h2><b>topics_topic</b> contains topic type functions
+ ====================================================================
 <h2><a name="types">Data Types</a></h2>
 
 <h3 class="typedecl"><a name="type-topic">topic()</a></h3>
@@ -25,9 +27,12 @@
 <h2><a name="index">Function Index</a></h2>
 <table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#all-0">all/0</a></td><td></td></tr>
 <tr><td valign="top"><a href="#body-1">body/1</a></td><td></td></tr>
+<tr><td valign="top"><a href="#exists-1">exists/1</a></td><td></td></tr>
+<tr><td valign="top"><a href="#from_json-1">from_json/1</a></td><td></td></tr>
 <tr><td valign="top"><a href="#get_by_id-1">get_by_id/1</a></td><td></td></tr>
 <tr><td valign="top"><a href="#id-1">id/1</a></td><td></td></tr>
 <tr><td valign="top"><a href="#new-3">new/3</a></td><td></td></tr>
+<tr><td valign="top"><a href="#save-1">save/1</a></td><td></td></tr>
 <tr><td valign="top"><a href="#title-1">title/1</a></td><td></td></tr>
 <tr><td valign="top"><a href="#to_json-1">to_json/1</a></td><td></td></tr>
 <tr><td valign="top"><a href="#username-1">username/1</a></td><td></td></tr>
@@ -45,6 +50,16 @@
 <p><tt>body(Topic::<a href="#type-topic">topic()</a>) -&gt; string()</tt><br></p>
 </div>
 
+<h3 class="function"><a name="exists-1">exists/1</a></h3>
+<div class="spec">
+<p><tt>exists(Id::string()) -&gt; atom()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="from_json-1">from_json/1</a></h3>
+<div class="spec">
+<p><tt>from_json(Json::string()) -&gt; <a href="#type-topic">topic()</a></tt><br></p>
+</div>
+
 <h3 class="function"><a name="get_by_id-1">get_by_id/1</a></h3>
 <div class="spec">
 <p><tt>get_by_id(Id::string()) -&gt; <a href="#type-topic">topic()</a></tt><br></p>
@@ -58,6 +73,11 @@
 <h3 class="function"><a name="new-3">new/3</a></h3>
 <div class="spec">
 <p><tt>new(Title::string(), Username::string(), Body::string()) -&gt; <a href="#type-topic">topic()</a></tt><br></p>
+</div>
+
+<h3 class="function"><a name="save-1">save/1</a></h3>
+<div class="spec">
+<p><tt>save(Topic::<a href="#type-topic">topic()</a>) -&gt; <a href="#type-topic">topic()</a></tt><br></p>
 </div>
 
 <h3 class="function"><a name="title-1">title/1</a></h3>

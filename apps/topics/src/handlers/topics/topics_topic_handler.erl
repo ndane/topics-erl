@@ -12,7 +12,7 @@
         allowed_methods/2,
         resource_exists/2,
         to_json/2,
-        update_from_json/2,
+        from_json/2,
         to_html/2]).
 
 %%====================================================================
@@ -23,7 +23,7 @@ init(Req, State) ->
     {cowboy_rest, Req, State}.
 
 %%====================================================================
-%% REST Flow
+%% REST Handlers
 %%====================================================================
 
 content_types_provided(Req, State) ->
@@ -40,7 +40,7 @@ resource_exists(Req, State) ->
     {Exists, Req, State}.
 
 %%====================================================================
-%% Parsers
+%% REST Methods
 %%====================================================================
 
 to_json(Req, State) ->
@@ -48,7 +48,7 @@ to_json(Req, State) ->
     Topic = topics_topic:get_by_id(Id),
     {topics_topic:to_json(Topic), Req, State}.
 
-update_from_json(Req, State) ->
+from_json(Req, State) ->
     ok.
 
 to_html(Req, State) ->

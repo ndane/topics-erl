@@ -10,9 +10,13 @@
 <hr>
 
 <h1>Module topics_user</h1>
-<ul class="index"><li><a href="#types">Data Types</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>
+<ul class="index"><li><a href="#description">Description</a></li><li><a href="#types">Data Types</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>User functionality.
+<p>Copyright © 2018 Nathan Dane</p>
 
+<p><b>Authors:</b> Nathan Dane (<a href="mailto:nathan@nathandane.co.uk"><tt>nathan@nathandane.co.uk</tt></a>).</p>
 
+<h2><a name="description">Description</a></h2>User functionality.
+ ====================================================================
 <h2><a name="types">Data Types</a></h2>
 
 <h3 class="typedecl"><a name="type-user">user()</a></h3>
@@ -21,7 +25,9 @@
 
 <h2><a name="index">Function Index</a></h2>
 <table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#email-1">email/1</a></td><td></td></tr>
-<tr><td valign="top"><a href="#new-2">new/2</a></td><td></td></tr>
+<tr><td valign="top"><a href="#hash_password-1">hash_password/1</a></td><td>Hash the password of a user and return a user with a hashed password.</td></tr>
+<tr><td valign="top"><a href="#new-3">new/3</a></td><td></td></tr>
+<tr><td valign="top"><a href="#save-1">save/1</a></td><td>Save a user into the users table.</td></tr>
 <tr><td valign="top"><a href="#to_json-1">to_json/1</a></td><td></td></tr>
 <tr><td valign="top"><a href="#username-1">username/1</a></td><td></td></tr>
 </table>
@@ -33,10 +39,26 @@
 <p><tt>email(User::<a href="#type-user">user()</a>) -&gt; string()</tt><br></p>
 </div>
 
-<h3 class="function"><a name="new-2">new/2</a></h3>
+<h3 class="function"><a name="hash_password-1">hash_password/1</a></h3>
 <div class="spec">
-<p><tt>new(Username::string(), Email::string()) -&gt; <a href="#type-user">user()</a></tt><br></p>
+<p><tt>hash_password(User::<a href="#type-user">user()</a>) -&gt; <a href="#type-user">user()</a></tt><br></p>
+<p><tt>User</tt>: The user whos plaintext password needs hashing<br>
+</p>
+</div><p>Hash the password of a user and return a user with a hashed password</p>
+
+<h3 class="function"><a name="new-3">new/3</a></h3>
+<div class="spec">
+<p><tt>new(Username::string(), Email::string(), Password::string()) -&gt; <a href="#type-user">user()</a></tt><br></p>
 </div>
+
+<h3 class="function"><a name="save-1">save/1</a></h3>
+<div class="spec">
+<p><tt>save(User::<a href="#type-user">user()</a>) -&gt; <a href="#type-user">user()</a></tt><br></p>
+<p><tt>User</tt>: The user to save to the database<br>
+</p>
+</div><p>Save a user into the users table.<br>
+       <b>NOTE:</b> This does not encrypt the password!
+       You must do that first by calling topics_user:hash_password/1</p>
 
 <h3 class="function"><a name="to_json-1">to_json/1</a></h3>
 <div class="spec">
