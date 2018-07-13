@@ -28,7 +28,7 @@ init(Req, State) ->
 %%====================================================================
 
 allowed_methods(Req, State) ->
-    {[<<"HEAD">>, <<"GET">>, <<"PUT">>, <<"OPTIONS">>], Req, State}.
+    {[<<"HEAD">>, <<"GET">>, <<"OPTIONS">>, <<"PUT">>], Req, State}.
 
 content_types_provided(Req, State) ->
     {[
