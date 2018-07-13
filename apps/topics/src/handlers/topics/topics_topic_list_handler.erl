@@ -49,9 +49,9 @@ to_json(Req, State) ->
 create_from_json(Req, State) ->
     {ok, ReqBody, Req2} = cowboy_req:read_body(Req),
     Body = io_lib:format("~s", [ReqBody]),
-    PostedTopic = topics_topic:from_json(Body),
-    topics_topic:save(PostedTopic),
-    {true, Req2, State}.
+    Topic = topics_topic:save(topics_topic:from_json(Body)),
+    Req3 = cowboy_req:reply(200, #{}, topics_topic:to_json(Topic), Req2),
+    {stop, Req3, State}.
 
 to_html(Req, State) ->
     {<<"Implement me">>, Req, State}.
