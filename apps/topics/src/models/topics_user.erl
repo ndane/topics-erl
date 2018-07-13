@@ -25,7 +25,8 @@
         hash_password/1]).
 
 % Parsers
--export([to_json/1]).
+-export([to_json/1,
+        from_json/1]).
 
 % Database Queries
 -export([save/1]).
@@ -75,6 +76,26 @@ to_json(User) when is_record(User, user) ->
     },
     jiffy:encode(Map).
 
+-spec from_json(string()) -> user().
+from_json(Json) ->
+    Map = jiffy:decode(Json, [return_maps]),
+    #{<<"username">> := Username, <<"email">> := Email, <<"password">> := Password} = Map,
+    #user{
+        username = binary_to_list(Username), 
+        email = binary_to_list(Email),
+        password = binary_to_list(Password)
+    }.
+
+-spec from_db_row(tuple()) -> user().
+from_db_row(Row) ->
+    {Id, Username, Email, Password, _CreatedAt, _UpdatedAt} = Row,
+    #user{
+        id = binary_to_list(Id),
+        username = binary_to_list(Username), 
+        email = binary_to_list(Email),
+        password = binary_to_list(Password)
+    }.
+
 %%====================================================================
 %% Internal API
 %%====================================================================
@@ -89,9 +110,10 @@ to_json(User) when is_record(User, user) ->
 %% @param User The user to save to the database
 -spec save(user()) -> user().
 save(User) ->
-    db:query("INSERT INTO USERS (username, email, password) VALUES ($1, $2, $3)", [
+    Query = "INSERT INTO USERS (username, email, password) VALUES ($1, $2, $3) RETURNING *",
+    {ok, 1, _Columns, [Row | _]} = db:query(Query, [
         User#user.username,
         User#user.email,
         User#user.password
     ]),
-    User.
+    from_db_row(Row).

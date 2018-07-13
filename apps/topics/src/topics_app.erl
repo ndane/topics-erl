@@ -18,12 +18,16 @@ start(_StartType, _StartArgs) ->
     db:connect("localhost", "postgres", "postgres", "topics"),
     Routes = [
         {'_', [
-            %% Root
+            % Root
             {"/", topics_base_handler, []},
 
-            %% Topics
+            % Topics
             {"/topics", topics_topic_list_handler, []}, 
-            {"/topics/:id", topics_topic_handler, []}
+            {"/topics/:id", topics_topic_handler, []},
+
+            % Users
+            {"/users", topics_user_handler, []},
+            {"/users/:id", topics_user_handler, []}
         ]}
     ],
     Dispatch = cowboy_router:compile(Routes),
