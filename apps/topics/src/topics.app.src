@@ -9,7 +9,8 @@
     cowboy,
     jiffy,
     epgsql,
-    bcrypt
+    bcrypt,
+    jwerl
    ]},
   {env,[]},
   {modules, []},
