@@ -10,7 +10,8 @@
     id = "" :: string(),
     username :: string(),
     email :: string(),
-    password = undefined :: string()
+    password = undefined :: string(),
+    scopes = [readonly] :: list(atom())
 }).
 
 -opaque user() :: #user{}.
@@ -23,7 +24,8 @@
 -export([username/1,
         email/1,
         password/1,
-        hash_password/1]).
+        hash_password/1,
+        scopes/1]).
 
 % Parsers
 -export([to_json/1,
@@ -60,6 +62,10 @@ email(User) ->
 -spec password(user()) -> string().
 password(User) ->
     User#user.password.
+
+-spec scopes(user()) -> list(atom()).
+scopes(User) ->
+    User#user.scopes.
 
 %% @doc Hash the password of a user and return a user with a hashed password
 %% @param User The user whos plaintext password needs hashing

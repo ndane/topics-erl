@@ -17,6 +17,6 @@ generate(Username) ->
   Jwt = [
     {name, list_to_binary(t_user:username(User))},
     {admin, true},
-    {scopes, []}
+    {scopes, t_user:scopes(User)}
   ],
   jwerl:sign(Jwt, hs512, secret_key()).

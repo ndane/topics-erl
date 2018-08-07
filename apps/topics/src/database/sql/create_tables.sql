@@ -24,8 +24,8 @@ EXECUTE PROCEDURE trigger_set_timestamp();
 
 CREATE TABLE USERS (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    username VARCHAR NOT NULL,
-    email VARCHAR NOT NULL,
+    username VARCHAR UNIQUE NOT NULL,
+    email VARCHAR UNIQUE NOT NULL,
     password VARCHAR NOT NULL,
 	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
