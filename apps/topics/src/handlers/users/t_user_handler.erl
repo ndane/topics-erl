@@ -67,7 +67,7 @@ from_json(Req, State) ->
         <<"token">> => Token
     },
     Headers = #{ <<"content-type">> => <<"application/json">> },
-    Req3 = cowboy_req:reply(200, Headers, jiffy:encode(Res), Req2),
+    Req3 = cowboy_req:reply(201, Headers, jiffy:encode(Res), Req2),
     {stop, Req3, State}.
 
 to_html(Req, State) ->
