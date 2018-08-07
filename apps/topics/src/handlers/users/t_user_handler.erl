@@ -28,7 +28,7 @@ init(Req, State) ->
 %%====================================================================
  
 allowed_methods(Req, State) ->
-    {[<<"HEAD">>, <<"GET">>, <<"OPTIONS">>, <<"PUT">>], Req, State}.
+    {[<<"HEAD">>, <<"GET">>, <<"OPTIONS">>, <<"PUT">>, <<"POST">>], Req, State}.
 
 content_types_provided(Req, State) ->
     {[
@@ -62,7 +62,12 @@ from_json(Req, State) ->
     User = t_user:from_json(Body),
     HashedUser = t_user:hash_password(User),
     NewUser = t_user:save(HashedUser),
-    Req3 = cowboy_req:reply(200, #{}, t_user:to_json(NewUser), Req2),
+    Token = t_jwt:generate(t_user:username(NewUser), t_user:is_admin(NewUser), t_user:scopes(NewUser)),
+    Res = #{
+        <<"token">> => Token
+    },
+    Headers = #{ <<"content-type">> => <<"application/json">> },
+    Req3 = cowboy_req:reply(200, Headers, jiffy:encode(Res), Req2),
     {stop, Req3, State}.
 
 to_html(Req, State) ->

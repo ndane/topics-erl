@@ -11,7 +11,8 @@
     username :: string(),
     email :: string(),
     password = undefined :: string(),
-    scopes = [readonly] :: list(atom())
+    scopes = [readonly] :: list(atom()),
+    admin = false :: atom()
 }).
 
 -opaque user() :: #user{}.
@@ -24,8 +25,9 @@
 -export([username/1,
         email/1,
         password/1,
-        hash_password/1,
-        scopes/1]).
+        scopes/1,
+        is_admin/1,
+        hash_password/1]).
 
 % Parsers
 -export([to_json/1,
@@ -67,6 +69,10 @@ password(User) ->
 scopes(User) ->
     User#user.scopes.
 
+-spec is_admin(user()) -> true | false.
+is_admin(User) ->
+    User#user.admin.
+
 %% @doc Hash the password of a user and return a user with a hashed password
 %% @param User The user whos plaintext password needs hashing
 -spec hash_password(user()) -> user().
@@ -82,7 +88,6 @@ hash_password(User) when is_record(User, user) ->
 -spec to_json(user()) -> iodata().
 to_json(User) when is_record(User, user) ->
     Map = #{
-        id => list_to_binary(User#user.id),
         username => list_to_binary(User#user.username),
         email => list_to_binary(User#user.email)
     },
@@ -100,12 +105,13 @@ from_json(Json) ->
 
 -spec from_db_row(tuple()) -> user().
 from_db_row(Row) ->
-    {Id, Username, Email, Password, _CreatedAt, _UpdatedAt} = Row,
+    {Id, Username, Email, Password, Admin, _CreatedAt, _UpdatedAt} = Row,
     #user{
         id = binary_to_list(Id),
         username = binary_to_list(Username), 
         email = binary_to_list(Email),
-        password = binary_to_list(Password)
+        password = binary_to_list(Password),
+        admin = Admin
     }.
 
 %%====================================================================
