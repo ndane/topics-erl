@@ -4,7 +4,7 @@
 %% @doc REST Cowboy Module to access the topics list - /topics
 %%====================================================================
 
--module(topics_topic_list_handler).
+-module(t_topic_list_handler).
 -behaviour(cowboy_handler).
 
 -export([init/2,
@@ -43,8 +43,8 @@ allowed_methods(Req, State) ->
 %%====================================================================
 
 to_json(Req, State) ->
-    Topics = topics_topic:all(),
-    {topics_topic:to_json(Topics), Req, State}.
+    Topics = t_topic:all(),
+    {t_topic:to_json(Topics), Req, State}.
 
 to_html(Req, State) ->
     {<<"Implement me">>, Req, State}.
@@ -57,6 +57,6 @@ to_html(Req, State) ->
 from_json(Req, State) ->
     {ok, ReqBody, Req2} = cowboy_req:read_body(Req),
     Body = io_lib:format("~s", [ReqBody]),
-    Topic = topics_topic:save(topics_topic:from_json(Body)),
-    Req3 = cowboy_req:reply(200, #{}, topics_topic:to_json(Topic), Req2),
+    Topic = t_topic:save(t_topic:from_json(Body)),
+    Req3 = cowboy_req:reply(200, #{}, t_topic:to_json(Topic), Req2),
     {stop, Req3, State}.

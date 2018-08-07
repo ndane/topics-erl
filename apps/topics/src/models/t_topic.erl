@@ -1,10 +1,10 @@
 %%====================================================================
 %% @author Nathan Dane <nathan@nathandane.co.uk>
 %% @copyright 2018 Nathan Dane
-%% @doc <b>topics_topic</b> contains topic type functions 
+%% @doc <b>t_topic</b> contains topic type functions 
 %%====================================================================
 
--module(topics_topic).
+-module(t_topic).
 
 -record(topic, {
     id = "" :: string(),

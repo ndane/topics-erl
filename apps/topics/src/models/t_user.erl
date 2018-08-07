@@ -4,7 +4,7 @@
 %% @doc User functionality.
 %%====================================================================
 
--module(topics_user).
+-module(t_user).
 
 -record(user, {
     id = "" :: string(),
@@ -112,7 +112,7 @@ from_db_row(Row) ->
 
 %% @doc Save a user into the users table.<br /> 
 %%      <b>NOTE:</b> This does not encrypt the password!
-%%      You must do that first by calling topics_user:hash_password/1
+%%      You must do that first by calling t_user:hash_password/1
 %% @param User The user to save to the database
 -spec save(user()) -> user().
 save(User) ->

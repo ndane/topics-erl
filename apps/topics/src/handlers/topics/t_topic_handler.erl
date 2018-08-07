@@ -4,7 +4,7 @@
 %% @doc REST Cowboy Module to access topic resources - /topics/:id
 %%====================================================================
 
--module(topics_topic_handler).
+-module(t_topic_handler).
 -behaviour(cowboy_handler).
 
 -export([init/2,
@@ -36,7 +36,7 @@ allowed_methods(Req, State) ->
 
 resource_exists(Req, State) ->
     Id = extract_id(Req),
-    Exists = topics_topic:exists(Id),
+    Exists = t_topic:exists(Id),
     {Exists, Req, State}.
 
 %%====================================================================
@@ -45,19 +45,19 @@ resource_exists(Req, State) ->
 
 to_json(Req, State) ->
     Id = extract_id(Req),
-    Topic = topics_topic:get_by_id(Id),
-    {topics_topic:to_json(Topic), Req, State}.
+    Topic = t_topic:get_by_id(Id),
+    {t_topic:to_json(Topic), Req, State}.
 
 from_json(Req, State) ->
     ok.
 
 to_html(Req, State) ->
     Id = extract_id(Req),
-    Topic = topics_topic:get_by_id(Id),
+    Topic = t_topic:get_by_id(Id),
     Body = io_lib:format("<h1>Topic ~s</h1><br />Posted by: ~s<br /><p />~s", [
-        topics_topic:title(Topic),
-        topics_topic:username(Topic),
-        topics_topic:body(Topic)
+        t_topic:title(Topic),
+        t_topic:username(Topic),
+        t_topic:body(Topic)
     ]),
     {list_to_binary(Body), Req, State}.
 

@@ -3,7 +3,7 @@
 %% @copyright 2018 Nathan Dane
 %% @doc REST Cowboy Module to access the user resources
 %%====================================================================
--module(topics_user_handler).
+-module(t_user_handler).
 -behaviour(cowboy_handler).
 
 -export([init/2,
@@ -53,25 +53,25 @@ resource_exists(Req, State) ->
 
 to_json(Req, State) ->
     Id = extract_id(Req),
-    Topic = topics_topic:get_by_id(Id),
-    {topics_topic:to_json(Topic), Req, State}.
+    Topic = t_topic:get_by_id(Id),
+    {t_topic:to_json(Topic), Req, State}.
 
 from_json(Req, State) ->
     {ok, ReqBody, Req2} = cowboy_req:read_body(Req),
     Body = io_lib:format("~s", [ReqBody]),
-    User = topics_user:from_json(Body),
-    HashedUser = topics_user:hash_password(User),
-    NewUser = topics_user:save(HashedUser),
-    Req3 = cowboy_req:reply(200, #{}, topics_user:to_json(NewUser), Req2),
+    User = t_user:from_json(Body),
+    HashedUser = t_user:hash_password(User),
+    NewUser = t_user:save(HashedUser),
+    Req3 = cowboy_req:reply(200, #{}, t_user:to_json(NewUser), Req2),
     {stop, Req3, State}.
 
 to_html(Req, State) ->
     Id = extract_id(Req),
-    Topic = topics_topic:get_by_id(Id),
+    Topic = t_topic:get_by_id(Id),
     HtmlBody = io_lib:format("<h1>Topic ~s</h1><br />Posted by: ~s<br /><p />~s", [
-        topics_topic:title(Topic),
-        topics_topic:username(Topic),
-        topics_topic:body(Topic)
+        t_topic:title(Topic),
+        t_topic:username(Topic),
+        t_topic:body(Topic)
     ]),
     {list_to_binary(HtmlBody), Req, State}.
 

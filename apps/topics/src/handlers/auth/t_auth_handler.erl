@@ -4,7 +4,7 @@
 %% @doc REST Cowboy Module to handle user authentication
 %%====================================================================
 
--module(topics_auth_handler).
+-module(t_auth_handler).
 -behaviour(cowboy_handler).
 
 -export([
@@ -48,8 +48,8 @@ get_token(Req) ->
     {ok, Body, Req2} = cowboy_req:read_body(Req),
     Map = jiffy:decode(Body, [return_maps]),
     #{ <<"username">> := Username, <<"password">> := Password } = Map,
-    {ok, User} = topics_user:find_by_username(Username),
-    Hash = topics_user:password(User),
+    {ok, User} = t_user:find_by_username(Username),
+    Hash = t_user:password(User),
     case {ok, Hash} =:= bcrypt:hashpw(Password, Hash) of
         true -> {ok, Username, Req2};
         false -> {hash_mismatch, Req2}
