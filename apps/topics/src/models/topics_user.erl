@@ -22,6 +22,7 @@
 % Getters
 -export([username/1,
         email/1,
+        password/1,
         hash_password/1]).
 
 % Parsers
@@ -29,7 +30,8 @@
         from_json/1]).
 
 % Database Queries
--export([save/1]).
+-export([save/1, 
+        find_by_username/1]).
 
 %%====================================================================
 %% Initializer
@@ -54,6 +56,10 @@ username(User) ->
 -spec email(user()) -> string().
 email(User) ->
     User#user.email.
+
+-spec password(user()) -> string().
+password(User) ->
+    User#user.password.
 
 %% @doc Hash the password of a user and return a user with a hashed password
 %% @param User The user whos plaintext password needs hashing
@@ -117,3 +123,8 @@ save(User) ->
         User#user.password
     ]),
     from_db_row(Row).
+
+-spec find_by_username(string()) -> {atom(), user()}.
+find_by_username(Username) ->
+    {ok, _Columns, [Row | _]} = db:query("SELECT * FROM USERS WHERE Username = $1", [Username]),
+    {ok, from_db_row(Row)}.

@@ -27,7 +27,10 @@ start(_StartType, _StartArgs) ->
 
             % Users
             {"/users", topics_user_handler, []},
-            {"/users/:id", topics_user_handler, []}
+            {"/users/:id", topics_user_handler, []},
+
+            % Auth
+            {"/auth", topics_auth_handler, []}
         ]}
     ],
     Dispatch = cowboy_router:compile(Routes),
