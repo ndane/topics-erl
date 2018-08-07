@@ -32,13 +32,19 @@ content_types_accepted(Req, State) ->
 
 from_json(Req, State) ->
     case get_token(Req) of
-        {ok, Token, Req2} -> 
-            Req3 = cowboy_req:reply(200, #{<<"content-type">> => <<"application/json">>}, Token, Req2),
+        {ok, Token, Req2} ->
+            Res = #{
+                <<"token">> => Token
+            },
+            Req3 = cowboy_req:reply(200, #{<<"content-type">> => <<"application/json">>}, jiffy:encode(Res), Req2),
             {stop, Req3, State};
 
         {hash_mismatch, Req2} ->
             %% TODO: Shall we create and error module for crafting API errors?
-            Req3 = cowboy_req:reply(401, #{<<"content-type">> => <<"application/json">>}, "{\"error\": \"Unauthenticated\"}", Req2),
+            Res = #{
+                <<"error">> => <<"Unauthenticated">>
+            },
+            Req3 = cowboy_req:reply(401, #{<<"content-type">> => <<"application/json">>}, jiffy:encode(Res), Req2),
             {stop, Req3, State}
     end.
 
@@ -51,6 +57,7 @@ get_token(Req) ->
     {ok, User} = t_user:find_by_username(Username),
     Hash = t_user:password(User),
     case {ok, Hash} =:= bcrypt:hashpw(Password, Hash) of
-        true -> {ok, Username, Req2};
+        % TODO: Start using ID's instead of usernames internally?
+        true -> {ok, t_jwt:generate(Username), Req2};
         false -> {hash_mismatch, Req2}
     end.
