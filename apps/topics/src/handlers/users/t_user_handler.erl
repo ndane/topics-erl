@@ -44,17 +44,20 @@ is_authorized(Req, State) ->
     {true, Req, State}.
 
 resource_exists(Req, State) ->
-    % TODO: Check user with id :id exists in the DB
-    {true, Req, State}.
+    Username = extract_id(Req),
+    case t_user:find_by_username(Username) of
+        {ok, _} -> {true, Req, State};
+        _ -> {false, Req, State}
+    end.
 
 %%====================================================================
 %% REST Methods
 %%====================================================================
 
 to_json(Req, State) ->
-    Id = extract_id(Req),
-    Topic = t_topic:get_by_id(Id),
-    {t_topic:to_json(Topic), Req, State}.
+    Username = extract_id(Req),
+    {ok, User} = t_user:find_by_username(Username),
+    {t_user:to_json(User), Req, State}.
 
 from_json(Req, State) ->
     {ok, ReqBody, Req2} = cowboy_req:read_body(Req),
@@ -71,18 +74,11 @@ from_json(Req, State) ->
     {stop, Req3, State}.
 
 to_html(Req, State) ->
-    Id = extract_id(Req),
-    Topic = t_topic:get_by_id(Id),
-    HtmlBody = io_lib:format("<h1>Topic ~s</h1><br />Posted by: ~s<br /><p />~s", [
-        t_topic:title(Topic),
-        t_topic:username(Topic),
-        t_topic:body(Topic)
-    ]),
-    {list_to_binary(HtmlBody), Req, State}.
+    {<<"Not Implemented">>, Req, State}.
 
 %%====================================================================
 %% Internal API
 %%====================================================================
 
 extract_id(Req) ->
-    cowboy_req:binding(id, Req).
+    binary_to_list(cowboy_req:binding(id, Req)).
