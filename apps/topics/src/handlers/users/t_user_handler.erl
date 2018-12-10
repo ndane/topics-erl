@@ -63,8 +63,7 @@ from_json(Req, State) ->
     {ok, ReqBody, Req2} = cowboy_req:read_body(Req),
     Body = io_lib:format("~s", [ReqBody]),
     User = t_user:from_json(Body),
-    HashedUser = t_user:hash_password(User),
-    NewUser = t_user:save(HashedUser),
+    NewUser = t_user:save(User),
     Token = t_jwt:generate(t_user:username(NewUser), t_user:is_admin(NewUser), t_user:scopes(NewUser)),
     Res = #{
         <<"token">> => Token

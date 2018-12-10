@@ -26,8 +26,7 @@
         email/1,
         password/1,
         scopes/1,
-        is_admin/1,
-        hash_password/1]).
+        is_admin/1]).
 
 % Parsers
 -export([to_json/1,
@@ -123,16 +122,15 @@ from_db_row(Row) ->
 %%====================================================================
 
 %% @doc Save a user into the users table.<br /> 
-%%      <b>NOTE:</b> This does not encrypt the password!
-%%      You must do that first by calling t_user:hash_password/1
 %% @param User The user to save to the database
 -spec save(user()) -> user().
 save(User) ->
+    HashedUser = hash_password(User),
     Query = "INSERT INTO USERS (username, email, password) VALUES ($1, $2, $3) RETURNING *",
     {ok, 1, _Columns, [Row | _]} = db:query(Query, [
-        User#user.username,
-        User#user.email,
-        User#user.password
+        HashedUser#user.username,
+        HashedUser#user.email,
+        HashedUser#user.password
     ]),
     from_db_row(Row).
 
