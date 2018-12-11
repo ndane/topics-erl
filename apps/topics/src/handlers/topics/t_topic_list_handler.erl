@@ -11,6 +11,7 @@
         content_types_provided/2,
         content_types_accepted/2,
         allowed_methods/2,
+        is_authorized/2,
         to_json/2,
         from_json/2,
         to_html/2]).
@@ -37,6 +38,10 @@ content_types_accepted(Req, State) ->
 
 allowed_methods(Req, State) ->
     {[<<"HEAD">>, <<"GET">>, <<"PUT">>, <<"OPTIONS">>], Req, State}.
+
+is_authorized(Req, State) ->
+    % TODO: Check JWT scope for /user/:id
+    {{false, <<"/auth">>}, Req, State}.
 
 %%====================================================================
 %% Parsers

@@ -10,8 +10,9 @@
     jiffy,
     epgsql,
     bcrypt,
-    jwerl
-   ]},
+    jwerl,
+    lager
+  ]},
   {env,[]},
   {modules, []},
 

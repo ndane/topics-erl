@@ -15,7 +15,9 @@
 -export([
     allowed_methods/2,
     content_types_accepted/2,
-    from_json/2
+    content_types_provided/2,
+    from_json/2,
+    unauthenticated/2
 ]).
 
 %% Rest Callbacks
@@ -30,6 +32,9 @@ allowed_methods(Req, State) ->
 content_types_accepted(Req, State) ->
     {[{<<"application/json">>, from_json}], Req, State}.
 
+content_types_provided(Req, State) ->
+    {[{<<"application/json">>, unauthenticated}], Req, State}.
+
 from_json(Req, State) ->
     case get_token(Req) of
         {ok, Token, Req2} ->
@@ -40,13 +45,16 @@ from_json(Req, State) ->
             {stop, Req3, State};
 
         {hash_mismatch, Req2} ->
-            %% TODO: Shall we create and error module for crafting API errors?
-            Res = #{
-                <<"error">> => <<"Unauthenticated">>
-            },
-            Req3 = cowboy_req:reply(401, #{<<"content-type">> => <<"application/json">>}, jiffy:encode(Res), Req2),
-            {stop, Req3, State}
+            unauthenticated(Req2, State)
     end.
+
+unauthenticated(Req, State) ->
+    %% TODO: Shall we create and error module for crafting API errors?
+    Res = #{
+        <<"error">> => <<"Unauthenticated">>
+    },
+    Req2 = cowboy_req:reply(401, #{<<"content-type">> => <<"application/json">>}, jiffy:encode(Res), Req),
+    {stop, Req2, State}.
 
 %% Internal API
 

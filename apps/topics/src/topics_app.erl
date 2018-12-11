@@ -15,6 +15,7 @@
 %%====================================================================
 
 start(_StartType, _StartArgs) ->
+    lager:start(),
     db:connect("localhost", "postgres", "postgres", "topics"),
     Routes = [
         {'_', [
@@ -36,7 +37,12 @@ start(_StartType, _StartArgs) ->
     Dispatch = cowboy_router:compile(Routes),
     {ok, _} = cowboy:start_clear(topics_http_listener, 
                                 [{port, 8080}],
-                                #{env => #{dispatch => Dispatch}}),
+                                #{
+                                    env => #{dispatch => Dispatch},
+                                    middlewares => [t_logger_middleware, 
+                                                    cowboy_router,
+                                                    cowboy_handler]
+                                }),
     topics_sup:start_link().
 
 %%--------------------------------------------------------------------
