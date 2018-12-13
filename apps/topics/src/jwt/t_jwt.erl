@@ -7,7 +7,8 @@
 
 -export([generate/1,
         generate/3,
-        verify/1]).
+        verify/1,
+        scopes/1]).
 
 -spec secret_key() -> binary().
 secret_key() ->
@@ -22,6 +23,7 @@ generate(Username) ->
 generate(Username, IsAdmin, Scopes) ->
     Jwt = [
         {name, list_to_binary(Username)},
+        {sub, list_to_binary(Username)},
         {admin, IsAdmin},
         {scopes, Scopes}
     ],
@@ -30,3 +32,9 @@ generate(Username, IsAdmin, Scopes) ->
 -spec verify(Jwt :: string()) -> {atom(), map()}.
 verify(Jwt) ->
     jwerl:verify(Jwt, hs512, secret_key()).
+
+% Verifies the JWT and returns a list of scopes
+-spec scopes(Jwt :: binary()) -> {ok | invalid, [atom()]}.
+scopes(Jwt) ->
+    {ok, #{scopes := Scopes}} = verify(Jwt),
+    {ok, [binary_to_atom(S, utf8) || S <- Scopes]}.

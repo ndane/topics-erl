@@ -19,7 +19,7 @@
 -export_type([user/0]).
 
 % Initializer
--export([new/3]).
+-export([new/4]).
 
 % Getters
 -export([username/1,
@@ -27,6 +27,9 @@
         password/1,
         scopes/1,
         is_admin/1]).
+
+% Setters
+-export([set_scopes/2]).
 
 % Parsers
 -export([to_json/1,
@@ -40,12 +43,13 @@
 %% Initializer
 %%====================================================================
 
--spec new(Username :: string(), Email :: string(), Password :: string()) -> user().
-new(Username, Email, Password) ->
+-spec new(Username :: string(), Email :: string(), Password :: string(), Scopes :: [atom()]) -> user().
+new(Username, Email, Password, Scopes) ->
     #user{
         username = Username,
         email = Email,
-        password = Password
+        password = Password,
+        scopes = Scopes
     }.
 
 %%====================================================================
@@ -71,6 +75,14 @@ scopes(User) ->
 -spec is_admin(user()) -> true | false.
 is_admin(User) ->
     User#user.admin.
+
+%%====================================================================
+%% Setters
+%%====================================================================
+
+-spec set_scopes(User :: user(), Scopes :: [atom()]) -> user().
+set_scopes(User, Scopes) ->
+    User#user { scopes = Scopes }.
 
 %% @doc Hash the password of a user and return a user with a hashed password
 %% @param User The user whos plaintext password needs hashing
@@ -104,12 +116,13 @@ from_json(Json) ->
 
 -spec from_db_row(tuple()) -> user().
 from_db_row(Row) ->
-    {Id, Username, Email, Password, Admin, _CreatedAt, _UpdatedAt} = Row,
+    {Id, Username, Email, Password, Scopes, Admin, _CreatedAt, _UpdatedAt} = Row,
     #user{
         id = binary_to_list(Id),
         username = binary_to_list(Username), 
         email = binary_to_list(Email),
         password = binary_to_list(Password),
+        scopes = [binary_to_atom(S, utf8) || S <- Scopes],
         admin = Admin
     }.
 
@@ -126,11 +139,12 @@ from_db_row(Row) ->
 -spec save(user()) -> user().
 save(User) ->
     HashedUser = hash_password(User),
-    Query = "INSERT INTO USERS (username, email, password) VALUES ($1, $2, $3) RETURNING *",
+    Query = "INSERT INTO USERS (username, email, password, scopes) VALUES ($1, $2, $3, $4) RETURNING *",
     {ok, 1, _Columns, [Row | _]} = db:query(Query, [
         HashedUser#user.username,
         HashedUser#user.email,
-        HashedUser#user.password
+        HashedUser#user.password,
+        HashedUser#user.scopes
     ]),
     from_db_row(Row).
 
